@@ -3,13 +3,19 @@ package thread;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CachedThreadPool {
+    private final BlockingQueue<Runnable> taskQueue;
     private final BlockingQueue<WorkerThread> idleThreads;
     private final AtomicBoolean isStopped = new AtomicBoolean(false);
+    private final AtomicInteger currentThreadCount = new AtomicInteger(0);
+    private final int maxThreads;
 
-    public CachedThreadPool() {
-        idleThreads = new LinkedBlockingQueue<>();
+    public CachedThreadPool(int maxThreads) {
+        this.taskQueue = new LinkedBlockingQueue<>();
+        this.idleThreads = new LinkedBlockingQueue<>();
+        this.maxThreads = maxThreads;
     }
 
     public void execute(Runnable task) {
@@ -18,11 +24,15 @@ public class CachedThreadPool {
         }
 
         WorkerThread worker = idleThreads.poll();
-        if (worker == null) {
-            worker = new WorkerThread(idleThreads);
+
+        if (worker == null && currentThreadCount.get() < maxThreads) {
+            worker = new WorkerThread(taskQueue, idleThreads);
             worker.start();
+            currentThreadCount.incrementAndGet();
         }
-        worker.assignTask(task);
+
+        // 작업을 큐에 추가
+        taskQueue.offer(task);
     }
 
     public void shutdown() {

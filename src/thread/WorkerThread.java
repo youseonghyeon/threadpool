@@ -2,46 +2,40 @@ package thread;
 
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 class WorkerThread extends Thread {
-    private final BlockingQueue<WorkerThread> idleThreads;
     private final BlockingQueue<Runnable> taskQueue;
+    private final BlockingQueue<WorkerThread> idleThreads;
     private boolean isStopped = false;
 
-    public WorkerThread(BlockingQueue<WorkerThread> idleThreads) {
+    public WorkerThread(BlockingQueue<Runnable> taskQueue, BlockingQueue<WorkerThread> idleThreads) {
+        this.taskQueue = taskQueue;
         this.idleThreads = idleThreads;
-        this.taskQueue = new LinkedBlockingQueue<>(1);
-    }
-
-    public void assignTask(Runnable task) {
-        try {
-            taskQueue.put(task);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Override
     public void run() {
         while (!isStopped) {
             try {
-                Runnable task = taskQueue.poll(60, TimeUnit.SECONDS);
+                Runnable task = taskQueue.poll(); // 큐에서 작업을 가져옴
+
                 if (task != null) {
                     task.run();
-                    idleThreads.offer(this);
-                } else {
-                    stopWorker();
                 }
+
+                // 유휴 상태로 돌아가 대기
+                idleThreads.offer(this);
+
+                // 작업이 없으면 대기 상태로 유지
+                Thread.sleep(100);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt(); // 인터럽트 처리
             }
         }
     }
 
     public void stopWorker() {
         isStopped = true;
-        this.interrupt();
+        this.interrupt(); // 인터럽트를 통해 종료
     }
 }
