@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JsBuildToolPackageJson" sorting="DEFINITION_ORDER" />
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Angular</id>
+          </State>
+          <State>
+            <id>CSS</id>
+          </State>
+          <State>
+            <id>ES2015 마이그레이션 지원JavaScript and TypeScript</id>
+          </State>
+          <State>
+            <id>Flow 타입 검사기JavaScript and TypeScript</id>
+          </State>
+          <State>
+            <id>GPathGroovy</id>
+          </State>
+          <State>
+            <id>Groovy</id>
+          </State>
+          <State>
+            <id>HTTP 클라이언트</id>
+          </State>
+          <State>
+            <id>JPA</id>
+          </State>
+          <State>
+            <id>JUnitJava</id>
+          </State>
+          <State>
+            <id>Java</id>
+          </State>
+          <State>
+            <id>Java 5Java 언어 수준 마이그레이션 지원Java</id>
+          </State>
+          <State>
+            <id>Java 8Java 언어 수준 마이그레이션 지원Java</id>
+          </State>
+          <State>
+            <id>Java 9Java 언어 수준 마이그레이션 지원Java</id>
+          </State>
+          <State>
+            <id>Java 언어 수준 마이그레이션 지원Java</id>
+          </State>
+          <State>
+            <id>JavaBeans 문제Java</id>
+          </State>
+          <State>
+            <id>JavaScript and TypeScript</id>
+          </State>
+          <State>
+            <id>JavadocJava</id>
+          </State>
+          <State>
+            <id>Kotlin</id>
+          </State>
+          <State>
+            <id>Proofreading</id>
+          </State>
+          <State>
+            <id>RESTful 웹 서비스(JAX-RS)</id>
+          </State>
+          <State>
+            <id>SQL</id>
+          </State>
+          <State>
+            <id>Spring</id>
+          </State>
+          <State>
+            <id>Spring CoreSpring</id>
+          </State>
+          <State>
+            <id>UI 양식</id>
+          </State>
+          <State>
+            <id>Velocity</id>
+          </State>
+          <State>
+            <id>XMLSpring CoreSpring</id>
+          </State>
+          <State>
+            <id>null 값 가능성 문제가능한 버그Java</id>
+          </State>
+          <State>
+            <id>가능한 버그Java</id>
+          </State>
+          <State>
+            <id>가시성Java</id>
+          </State>
+          <State>
+            <id>국제화 (Internationalization)</id>
+          </State>
+          <State>
+            <id>국제화 (Internationalization)Java</id>
+          </State>
+          <State>
+            <id>기타 문제Kotlin</id>
+          </State>
+          <State>
+            <id>로그 관련Java</id>
+          </State>
+          <State>
+            <id>리플렉티브 액세스Java</id>
+          </State>
+          <State>
+            <id>마이그레이션Kotlin</id>
+          </State>
+          <State>
+            <id>메서드 메트릭Java</id>
+          </State>
+          <State>
+            <id>발생할 수 있는 버그CSS</id>
+          </State>
+          <State>
+            <id>발생할 수 있는 버그Java</id>
+          </State>
+          <State>
+            <id>발생할 수 있는 버그Kotlin</id>
+          </State>
+          <State>
+            <id>보안Java</id>
+          </State>
+          <State>
+            <id>불필요한 구문Kotlin</id>
+          </State>
+          <State>
+            <id>선언 중복성Java</id>
+          </State>
+          <State>
+            <id>설명 파일플러그인 DevKit</id>
+          </State>
+          <State>
+            <id>성능Java</id>
+          </State>
+          <State>
+            <id>숫자 문제Java</id>
+          </State>
+          <State>
+            <id>스레딩 문제Java</id>
+          </State>
+          <State>
+            <id>스타일 문제Kotlin</id>
+          </State>
+          <State>
+            <id>오류 처리Java</id>
+          </State>
+          <State>
+            <id>일반</id>
+          </State>
+          <State>
+            <id>일반JavaScript and TypeScript</id>
+          </State>
+          <State>
+            <id>장황하거나 중복 코드 구문Java</id>
+          </State>
+          <State>
+            <id>직렬화 문제Java</id>
+          </State>
+          <State>
+            <id>추상화 문제Java</id>
+          </State>
+          <State>
+            <id>캡슐화Java</id>
+          </State>
+          <State>
+            <id>코드 구문이 혼동될 수 있음JavaScript and TypeScript</id>
+          </State>
+          <State>
+            <id>코드Spring CoreSpring</id>
+          </State>
+          <State>
+            <id>코드플러그인 DevKit</id>
+          </State>
+          <State>
+            <id>클래스 메트릭Java</id>
+          </State>
+          <State>
+            <id>플러그인 DevKit</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Angular</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_22" default="true" project-jdk-name="openjdk-22" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
