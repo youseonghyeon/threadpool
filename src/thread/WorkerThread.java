@@ -5,6 +5,7 @@ import java.util.concurrent.BlockingQueue;
 class WorkerThread extends Thread {
     private final BlockingQueue<Runnable> taskQueue;
     private boolean isStopped = false;
+    private long lastStartTime;
 
     public WorkerThread(BlockingQueue<Runnable> taskQueue) {
         this.taskQueue = taskQueue;
@@ -14,6 +15,7 @@ class WorkerThread extends Thread {
     public void run() {
         while (!isStopped) {
             try {
+                lastStartTime = System.currentTimeMillis();
                 taskQueue.take().run();
             } catch (InterruptedException e) {
                 System.out.println("[WARN] Thread interrupted " + Thread.currentThread().getName());
@@ -21,6 +23,10 @@ class WorkerThread extends Thread {
                 break;
             }
         }
+    }
+
+    public long getLastStartTime() {
+        return lastStartTime;
     }
 
     public void stopWorker() {

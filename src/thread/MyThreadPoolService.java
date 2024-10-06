@@ -1,34 +1,35 @@
 package thread;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MyThreadPoolService {
-    private final BlockingQueue<Runnable> taskQueue;
-    private final CopyOnWriteArrayList<WorkerThread> activeThreadList;
-    private final AtomicBoolean isStopped = new AtomicBoolean(false);
+    private final int minThreads;
     private final int maxThreads;
+    private final BlockingQueue<Runnable> taskQueue;
+    private final List<WorkerThread> activeThreadList;
+    private final AtomicBoolean isStopped = new AtomicBoolean(false);
 
-    public MyThreadPoolService(int maxThreads) {
-        this(maxThreads, false);
-    }
+    private final int threadTimeout = 10000;
 
-    public MyThreadPoolService(int maxThreads, boolean useWatchDog) {
-        this.taskQueue = new LinkedBlockingQueue<>();
-        this.activeThreadList = new CopyOnWriteArrayList<>();
+    public MyThreadPoolService(int minThreads, int maxThreads) {
+        this.minThreads = minThreads;
         this.maxThreads = maxThreads;
-        if (useWatchDog) {
-            startWatchDogThread();
-        }
+        this.taskQueue = new LinkedBlockingQueue<>();
+        this.activeThreadList = Collections.synchronizedList(new ArrayList<>());
+        startWatchDogThread();
     }
 
     public void execute(Runnable task) {
         if (isStopped.get()) {
             throw new IllegalStateException("Thread pool is stopped");
         }
-        if (activeThreadList.size() < maxThreads) {
+        if (!taskQueue.isEmpty() && activeThreadList.size() < maxThreads) {
             generateWorkerThread();
         }
         taskQueue.offer(task);
@@ -50,24 +51,50 @@ public class MyThreadPoolService {
     private void startWatchDogThread() {
         new Thread(() -> {
             while (!isStopped.get()) {
-                activeThreadList.removeIf(workerThread -> !workerThread.isAlive());
-
-                if (!taskQueue.isEmpty() && activeThreadList.size() < maxThreads) {
-                    generateWorkerThread();
-                    continue;
-                }
-
-                sleep(1000);
+                removeDeadThreads();
+                removeTimedOutThread();
+                maintainMinThreads();
+                sleep(5000);
             }
         }).start();
+    }
+
+    private void removeDeadThreads() {
+        activeThreadList.removeIf(workerThread -> !workerThread.isAlive());
+    }
+
+    private void removeTimedOutThread() {
+        if (activeThreadList.size() > minThreads) {
+            Optional<WorkerThread> targetThread = activeThreadList.stream()
+                    .filter(this::timeOver)
+                    .findFirst();
+            targetThread.ifPresent(workerThread -> {
+                workerThread.stopWorker();
+                activeThreadList.remove(workerThread);
+            });
+        }
+    }
+
+    private void maintainMinThreads() {
+        if (activeThreadList.size() < minThreads) {
+            int currentThreadSize = activeThreadList.size();
+            for (int i = currentThreadSize; i < minThreads; i++) {
+                generateWorkerThread();
+            }
+        }
+    }
+
+
+    private boolean timeOver(WorkerThread workerThread) {
+        long lastStartTime = workerThread.getLastStartTime();
+        return System.currentTimeMillis() - lastStartTime > threadTimeout;
     }
 
     private static void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
-
 }
